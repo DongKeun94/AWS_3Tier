@@ -1,0 +1,130 @@
+variable "rds" {
+  type = string
+  default = "petclinic" //db instance
+}
+
+resource "aws_cloudwatch_dashboard" "rds" {
+   dashboard_name = "rds"
+   dashboard_body = <<EOF
+ {
+   "widgets": [
+       {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/RDS",
+                   "CPUUtilization",
+                   "DBInstanceIdentifier",
+                   "${var.rds}"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"ap-northeast-2",
+             "title":"rds Instance CPU"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"CPU"
+          }
+       },
+       {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/RDS",
+                   "FreeStorageSpace",
+                   "DBInstanceIdentifier",
+                   "${var.rds}"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"ap-northeast-2",
+             "title":"rds Instance FreeStorageSpace"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"FreeStorageSpace"
+          }
+       },
+              {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/RDS",
+                   "FreeableMemory",
+                   "DBInstanceIdentifier",
+                   "${var.rds}"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"ap-northeast-2",
+             "title":"EC2 Instance FreeableMemory"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"FreeableMemory"
+          }
+       },
+       {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/RDS",
+                   "DatabaseConnections",
+                   "DBInstanceIdentifier",
+                   "${var.rds}"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"ap-northeast-2",
+             "title":"DatabaseConnections"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"DatabaseConnections"
+          }
+       }
+   ]
+ }
+ EOF
+}

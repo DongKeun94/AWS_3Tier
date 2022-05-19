@@ -1,0 +1,168 @@
+variable "exlb" { //외부로드밸런서
+  type = string
+  default = "app/digda-external-elb/ce69acc48b68148e"//arn 부분 app부터 긁으면 됩니다.
+}
+variable "extarget" { //외부타겟그룹
+  type = string
+  default = "targetgroup/digda-tg/fa88161370de0f59" //arn targetgroup부터 긁어면 됩니다.
+}
+
+resource "aws_cloudwatch_dashboard" "ex-lb" {
+  dashboard_name = "ex-lb"
+
+  dashboard_body = <<EOF
+{
+  "widgets": [
+    {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+      "properties": {
+        "metrics": [
+          [
+            "AWS/ApplicationELB",
+            "TargetResponseTime",
+            "LoadBalancer",
+            "${var.exlb}"
+          ]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "ap-northeast-2",
+        "title": "TargetResponseTime"
+      }
+    },
+    {
+      "type": "text",
+      "x": 0,
+      "y": 7,
+      "width": 3,
+      "height": 3,
+      "properties": {
+        "markdown": "TargetResponseTime"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [
+            "AWS/ApplicationELB",
+            "RequestCount",
+            "LoadBalancer",
+            "${var.exlb}"
+          ]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "ap-northeast-2",
+        "title": "RequestCount"
+      }
+    },
+    {
+      "type": "text",
+      "x": 0,
+      "y": 7,
+      "width": 3,
+      "height": 3,
+      "properties": {
+        "markdown": "RequestCount"
+      }
+    },
+    {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+      "properties": {
+        "metrics": [
+          [
+            "AWS/ApplicationELB",
+            "HTTPCode_ELB_4XX_Count",
+            "LoadBalancer",
+            "${var.exlb}"
+          ]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "ap-northeast-2",
+        "title": "HTTPCode_ELB_4XX_Count"
+      }
+    },
+    {
+      "type": "text",
+      "x": 0,
+      "y": 7,
+      "width": 3,
+      "height": 3,
+      "properties": {
+        "markdown": "HTTPCode_ELB_4XX_Count"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [
+            "AWS/ApplicationELB",
+            "HTTPCode_ELB_5XX_Count",
+            "LoadBalancer",
+            "${var.exlb}"
+          ]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "ap-northeast-2",
+        "title": "HTTPCode_ELB_5XX_Count"
+      }
+    },
+    {
+      "type": "text",
+      "x": 0,
+      "y": 7,
+      "width": 3,
+      "height": 3,
+      "properties": {
+        "markdown": "HTTPCode_ELB_5XX_Count"
+      }
+    },
+    {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+      "properties": {
+        "metrics": [
+          [
+            "AWS/ApplicationELB",
+            "HTTPCode_ELB_503_Count",
+            "LoadBalancer",
+            "${var.exlb}"
+          ]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "ap-northeast-2",
+        "title": "HTTPCode_ELB_503_Count"
+      }
+    },
+    {
+      "type": "text",
+      "x": 0,
+      "y": 7,
+      "width": 3,
+      "height": 3,
+      "properties": {
+        "markdown": "HTTPCode_ELB_503_Count"
+      }
+    }
+  ]
+}
+EOF
+}

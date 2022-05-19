@@ -1,0 +1,121 @@
+/*variable "intarget" {
+  type = string
+  default = "targetgroup/digda-tg-1/242c7631758a4e08" //arn targetgroup부터 긁어면됩니다.
+}*/
+
+
+resource "aws_cloudwatch_dashboard" "in-lb-target" {
+  dashboard_name = "in-lb-target"
+
+  dashboard_body = <<EOF
+{
+  "widgets": [
+    {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+      "properties": {
+        "metrics": [
+          [
+           "AWS/ApplicationELB",
+           "UnHealthyHostCount",
+           "TargetGroup",
+           "${var.intarget}",
+           "LoadBalancer",
+           "${var.inlb}",
+           "AvailabilityZone",
+           "ap-northeast-2a"
+          ]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "ap-northeast-2",
+        "title": "HealthyHostCount"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [
+           "AWS/ApplicationELB",
+           "UnHealthyHostCount",
+           "TargetGroup",
+           "${var.intarget}",
+           "LoadBalancer",
+           "${var.inlb}",
+           "AvailabilityZone",
+           "ap-northeast-2a" 
+          ]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "ap-northeast-2",
+        "title": "HealthyHostCount"
+      }
+    },
+    {
+      "type": "text",
+      "x": 0,
+      "y": 7,
+      "width": 3,
+      "height": 3,
+      "properties": {
+        "markdown": "HealthyHostCount"
+      }
+    },
+    {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+      "properties": {
+        "metrics": [
+          [
+           "AWS/ApplicationELB",
+           "UnHealthyHostCount",
+           "TargetGroup",
+           "${var.intarget}",
+           "LoadBalancer",
+           "${var.inlb}",
+           "AvailabilityZone",
+           "ap-northeast-2c" 
+          ]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "ap-northeast-2",
+        "title": "UnHealthyHostCount"
+      }
+    },
+     {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+      "properties": {
+        "metrics": [
+          [
+           "AWS/ApplicationELB",
+           "UnHealthyHostCount",
+           "TargetGroup",
+           "${var.intarget}",
+           "LoadBalancer",
+           "${var.inlb}",
+           "AvailabilityZone",
+           "ap-northeast-2c" 
+          ]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "ap-northeast-2",
+        "title": "UnHealthyHostCount"
+      }
+    }
+    
+  ]
+}
+EOF
+}

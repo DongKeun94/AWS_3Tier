@@ -1,0 +1,234 @@
+variable "ec2-web" {
+  type = string
+  default = "i-0bac6f3d6e1cd4660" //instance id
+}
+
+variable "ec2-was" {
+  type = string
+  default = "i-0c043bde648e9356b" //instance id
+}
+
+resource "aws_cloudwatch_dashboard" "web" {
+   dashboard_name = "web"
+   dashboard_body = <<EOF
+ {
+   "widgets": [
+       {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/EC2",
+                   "CPUUtilization",
+                   "InstanceId",
+                   "${var.ec2-web}"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"ap-northeast-2",
+             "title":"EC2 Instance CPU"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"Hello world"
+          }
+       },
+       {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/EC2",
+                   "NetworkOut",
+                   "InstanceId",
+                   "${var.ec2-web}"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"ap-northeast-2",
+             "title":"EC2 Instance networkout"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"networkout"
+          }
+       },
+              {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/EC2",
+                   "NetworkIn",
+                   "InstanceId",
+                   "${var.ec2-web}"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"ap-northeast-2",
+             "title":"EC2 Instance networkin"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"networkin"
+          }
+       },
+       {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/EC2",
+                   "StatusCheckFailed",
+                   "InstanceId",
+                   "${var.ec2-web}"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"ap-northeast-2",
+             "title":"EC2 Instance StatusCheckFailed"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"StatusCheckFailed"
+          }
+       }
+   ]
+ }
+ EOF
+}
+
+resource "aws_cloudwatch_dashboard" "was" {
+   dashboard_name = "was"
+   dashboard_body = <<EOF
+ {
+   "widgets": [
+       {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/EC2",
+                   "CPUUtilization",
+                   "InstanceId",
+                   "${var.ec2-was}"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"ap-northeast-2",
+             "title":"EC2 Instance CPU"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"CPU"
+          }
+       },
+       {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/EC2",
+                   "NetworkOut",
+                   "InstanceId",
+                   "${var.ec2-was}"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"ap-northeast-2",
+             "title":"EC2 Instance networkout"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"networkout"
+          }
+       },
+              {
+         "type": "metric",
+         "view": "timeSeries",
+         "stacked": false,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/EC2",
+                   "StatusCheckFailed",
+                   "InstanceId",
+                   "${var.ec2-was}"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"ap-northeast-2",
+             "title":"EC2 Instance StatusCheckFailed"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"StatusCheckFailed"
+          }
+       }
+   ]
+ }
+ EOF
+}
+
+//StatusCheckFailed

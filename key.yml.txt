@@ -1,0 +1,44 @@
+---
+- name: ssh-key-gen
+  hosts: localhost
+  tasks:
+          - name : make directory
+            shell:
+                    cmd: mkdir .ssh
+          - name: ssh-keygen
+            shell:
+                    cmd: ssh-keygen -b 2048 -t rsa -f /home/bespin/.ssh/id_rsa -q -N ''
+          - name: chmod
+            file:
+                    path: /home/bespin/.ssh/id_rsa.pub
+                    mode: 0644
+          - name: chown
+            file:
+                    path: /home/bespin/.ssh/id_rsa
+                    owner: bespin
+                    group: bespin
+          - name: chown
+            file:
+                    path: /home/bespin/.ssh/id_rsa.pub
+                    owner: bespin
+                    group: bespin
+
+          - name: sshpass
+            shell:
+                    cmd: sudo apt install sshpass
+
+- name: ssh-copy-id
+  hosts: localhost
+  tasks:
+          - name: ssh-copy-id-1
+            shell:
+                    cmd: sshpass -p It1 ssh-copy-id -i /home/bespin/.ssh/id_rsa.pub bespin@10.0.2.12  -f -o StrictHostKeyChecking=no
+          - name: ssh-copy-id-2
+            shell:
+                    cmd: sshpass -p It1 ssh-copy-id -i /home/bespin/.ssh/id_rsa.pub bespin@10.0.12.12  -f -o StrictHostKeyChecking=no
+          - name: ssh-copy-id-3
+            shell:
+                    cmd: sshpass -p It1 ssh-copy-id -i /home/bespin/.ssh/id_rsa.pub bespin@10.0.3.12  -f -o StrictHostKeyChecking=no
+          - name: ssh-copy-id-4
+            shell:
+                    cmd: sshpass -p It1 ssh-copy-id -i /home/bespin/.ssh/id_rsa.pub bespin@10.0.13.12  -f -o StrictHostKeyChecking=no
